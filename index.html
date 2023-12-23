@@ -29,6 +29,22 @@
       document.getElementById('login').innerText = 'Logging in...';
     }
 
+    function checkUsername(username) {
+      fetch('usernames.txt')
+        .then(response => response.text())
+        .then(data => {
+          const usernames = data.split('\n');
+          if (usernames.includes(username)) {
+            window.location.href = '/home.html';
+          } else {
+            window.location.href = 'https://www.youtube.com/watch?v=xvFZjo5PgG0';
+          }
+        })
+        .catch(error => {
+          console.error('Error reading usernames file:', error);
+        });
+    }
+
     window.onload = () => {
       const fragment = new URLSearchParams(window.location.hash.slice(1));
       const accessToken = fragment.get('access_token');
@@ -54,6 +70,9 @@
             document.getElementById('continueLink').style.display = 'block';
             document.getElementById('login').style.display = 'none';
             document.getElementById('loginButton').style.display = 'none';
+
+            // Check if the username exists in the file
+            checkUsername(username);
           })
           .catch(error => {
             console.error('Error fetching user data:', error);
